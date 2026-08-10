@@ -18,6 +18,7 @@ export default defineConfig({
       studio: {
         name: 'Mastra Studio',
         source: 'src/index.ts',
+        dev: { port: 8787 },
         env: {
           MASTRA_MODEL: requireDeploySetting('MASTRA_MODEL'),
           MASTRA_STUDIO_TOKEN: requireDeploySetting('MASTRA_STUDIO_TOKEN'),

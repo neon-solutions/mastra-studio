@@ -9,6 +9,7 @@ const storageEndpoint = requireEnv('AWS_ENDPOINT_URL_S3');
 
 app.get('/health', (context) => context.json({ status: 'ok' }));
 app.get('/refresh-events', async (context) => {
+  // Mastra authenticates its registered routes; custom routes must check auth explicitly.
   const user = await auth.getCurrentUser(context.req.raw);
   if (!user) {
     return context.json({ error: 'Unauthorized' }, 401);
@@ -47,7 +48,6 @@ app.get('/refresh-events', async (context) => {
     headers: {
       'cache-control': 'no-cache, no-transform',
       'content-type': 'text/event-stream',
-      'x-refresh-mode': 'stream',
     },
   });
 });
