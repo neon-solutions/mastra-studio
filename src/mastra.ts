@@ -49,7 +49,7 @@ const assistant = new Agent({
 });
 
 const token = requireEnv('MASTRA_STUDIO_TOKEN');
-const auth = new SimpleAuth({
+export const auth = new SimpleAuth({
   tokens: {
     [token]: {
       id: 'studio-admin',

@@ -1,14 +1,19 @@
 import { Hono } from 'hono';
 import { MastraServer, type HonoBindings, type HonoVariables } from '@mastra/hono';
 import { requireEnv } from './env';
-import { mastra } from './mastra';
+import { auth, mastra } from './mastra';
 import { publicObjectUrl, resolveStudioAsset } from './studio-assets';
 
 const app = new Hono<{ Bindings: HonoBindings; Variables: HonoVariables }>();
 const storageEndpoint = requireEnv('AWS_ENDPOINT_URL_S3');
 
-app.get('/health', (context) => context.json({ status: 'ok', revision: 3 }));
-app.get('/refresh-events', (context) => {
+app.get('/health', (context) => context.json({ status: 'ok' }));
+app.get('/refresh-events', async (context) => {
+  const user = await auth.getCurrentUser(context.req.raw);
+  if (!user) {
+    return context.json({ error: 'Unauthorized' }, 401);
+  }
+
   const encoder = new TextEncoder();
   let heartbeat: ReturnType<typeof setInterval> | undefined;
   let closed = false;
@@ -40,7 +45,7 @@ app.get('/refresh-events', (context) => {
 
   return new Response(body, {
     headers: {
-      'cache-control': 'no-cache',
+      'cache-control': 'no-cache, no-transform',
       'content-type': 'text/event-stream',
       'x-refresh-mode': 'stream',
     },
@@ -51,7 +56,6 @@ const server = new MastraServer({ app, mastra });
 await server.init();
 
 mastra.loggerVNext.info('Mastra Studio ready', {
-  revision: 3,
   runtime: 'neon-functions',
 });
 await mastra.observability.flush();
@@ -86,9 +90,17 @@ app.all('*', async (context) => {
   }
 
   const key = asset.type === 'index' ? 'index.html' : asset.key;
-  const upstream = await fetch(publicObjectUrl(storageEndpoint, key), {
-    method: context.req.method,
-  });
+  let upstream: Response;
+  try {
+    upstream = await fetch(publicObjectUrl(storageEndpoint, key), {
+      method: context.req.method,
+    });
+  } catch (error) {
+    mastra.loggerVNext.error('Studio asset fetch failed', {
+      error: error instanceof Error ? error.message : 'Unknown error',
+    });
+    return context.text('Studio assets unavailable', 502);
+  }
 
   if (!upstream.ok) {
     if (upstream.status === 404 && asset.type === 'asset') {

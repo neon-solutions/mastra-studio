@@ -28,7 +28,7 @@ Prerequisites:
 
 - [Bun](https://bun.sh/)
 - [Neon CLI](https://neon.com/docs/reference/cli-reference)
-- A Neon project on a plan that includes AI Gateway
+- A Neon project on a plan that includes AI Gateway, in AWS US East (Ohio) (`aws-us-east-2`)
 
 Install dependencies and create the two deployment settings:
 
@@ -89,11 +89,11 @@ The Studio exposes:
 
 ```bash
 bun run typecheck
-bun test
+bun run test
 curl http://localhost:8787/health
 ```
 
-Unauthenticated requests to `/api/*` return `401`.
+Unauthenticated requests to registered `/api/*` routes and `/refresh-events` return `401`.
 
 ## Production boundaries
 
