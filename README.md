@@ -6,7 +6,7 @@ Self-host [Mastra Studio](https://mastra.ai/docs/getting-started/studio) with Ne
 - Neon Object Storage holds the static Studio assets.
 - Neon AI Gateway runs the example assistant.
 - Neon Postgres stores memory, logs, traces, and metrics.
-- Mastra SimpleAuth protects Studio and every Mastra API route.
+- Mastra SimpleAuth protects Studio and all non-auth Mastra API routes.
 
 ![Mastra Studio trace view](docs/mastra-studio.png)
 
