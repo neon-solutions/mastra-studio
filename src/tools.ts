@@ -47,7 +47,7 @@ export function createTools(db: DbClient) {
 
   const getDatabaseTime = createTool({
     id: 'get-database-time',
-    description: 'Return the current time from Neon Postgres.',
+    description: 'Return the current time from Lakebase Postgres on Neon.',
     inputSchema: emptyInputSchema,
     outputSchema: timestampOutputSchema,
     strict: true,
