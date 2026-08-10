@@ -1,5 +1,13 @@
 import { defineConfig } from '@neon/config/v1';
 
+function requireDeploySetting(name: 'MASTRA_MODEL' | 'MASTRA_STUDIO_TOKEN'): string {
+  const value = process.env[name];
+  if (!value) {
+    throw new Error(`Set ${name} before running Neon CLI commands`);
+  }
+  return value;
+}
+
 export default defineConfig({
   preview: {
     aiGateway: true,
@@ -11,8 +19,8 @@ export default defineConfig({
         name: 'Mastra Studio',
         source: 'src/index.ts',
         env: {
-          MASTRA_MODEL: process.env.MASTRA_MODEL ?? '',
-          MASTRA_STUDIO_TOKEN: process.env.MASTRA_STUDIO_TOKEN ?? '',
+          MASTRA_MODEL: requireDeploySetting('MASTRA_MODEL'),
+          MASTRA_STUDIO_TOKEN: requireDeploySetting('MASTRA_STUDIO_TOKEN'),
         },
       },
     },

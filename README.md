@@ -39,9 +39,12 @@ cp .env.example .env.deploy
 
 Set `MASTRA_STUDIO_TOKEN` in `.env.deploy` to a random value, for example from `openssl rand -hex 32`.
 
-Link the checkout to the target Neon project and branch:
+Load the settings, then link the checkout to the target Neon project and branch:
 
 ```bash
+set -a
+source .env.deploy
+set +a
 neon link
 neon checkout main
 ```
@@ -93,7 +96,7 @@ bun run test
 curl http://localhost:8787/health
 ```
 
-Unauthenticated requests to registered `/api/*` routes and `/refresh-events` return `401`.
+Unauthenticated requests to protected `/api/*` routes and `/refresh-events` return `401`.
 
 ## Production boundaries
 
