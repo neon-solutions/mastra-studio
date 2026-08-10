@@ -1,0 +1,14 @@
+node_modules
+coverage
+dist
+out
+*.log
+*.tsbuildinfo
+
+.env
+.env.*
+!.env.example
+.neon
+
+.DS_Store
+.idea
