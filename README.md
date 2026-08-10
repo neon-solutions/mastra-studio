@@ -5,7 +5,7 @@ Self-host [Mastra Studio](https://mastra.ai/docs/getting-started/studio) with Ne
 - [Neon Functions](https://neon.com/docs/compute/functions/overview) serves the Mastra API and proxies the Studio SPA.
 - [Neon Object Storage](https://neon.com/docs/storage/overview) holds the static Studio assets.
 - [Neon AI Gateway](https://neon.com/docs/ai-gateway/overview) runs the example assistant.
-- [Lakebase Postgres on Neon](https://neon.com/docs/introduction) stores memory, logs, traces, and metrics.
+- [Lakebase Postgres on Neon](https://neon.com/docs/introduction/neon-and-lakebase) stores memory, logs, traces, and metrics.
 - [Mastra SimpleAuth](https://mastra.ai/docs/server/auth/simple-auth) protects Studio and all non-auth Mastra API routes.
 
 ![Mastra Studio tool call](docs/mastra-studio.png)
